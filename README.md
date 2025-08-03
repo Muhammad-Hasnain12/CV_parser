@@ -1,73 +1,143 @@
-# Welcome to your Lovable project
+# ParsePath - AI-Powered Resume Parser
 
-## Project info
+A modern, beautiful web application for parsing resumes and extracting key information using AI technology.
 
-**URL**: https://lovable.dev/projects/9d6cf7f5-43eb-47ef-b354-8e9036a932c6
+## ✨ Features
 
-## How can I edit this code?
+- **🎨 Beautiful UI/UX**: Modern, responsive design with smooth animations
+- **🌙 Dark/Light Mode**: Toggle between dark and light themes with system preference detection
+- **📁 Drag & Drop Upload**: Easy file upload with drag and drop support
+- **🤖 AI-Powered Parsing**: Advanced AI technology for accurate information extraction
+- **📊 Structured Results**: Clean, organized display of parsed information
+- **⚡ Fast & Responsive**: Optimized performance with loading states
+- **📱 Mobile Friendly**: Fully responsive design for all devices
 
-There are several ways of editing your application.
+## 🚀 Tech Stack
 
-**Use Lovable**
+- **Frontend**: React 18 + TypeScript
+- **Styling**: Tailwind CSS + shadcn/ui
+- **Build Tool**: Vite
+- **Theme Management**: next-themes
+- **File Upload**: react-dropzone
+- **Icons**: Lucide React
+- **Animations**: Tailwind CSS Animations
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/9d6cf7f5-43eb-47ef-b354-8e9036a932c6) and start prompting.
+## 🎯 What Gets Extracted
 
-Changes made via Lovable will be committed automatically to this repo.
+- **Personal Information**: Name, email, phone number
+- **Skills**: Technical and soft skills
+- **Work Experience**: Job history with company names and dates
+- **Education**: Academic background and qualifications
 
-**Use your preferred IDE**
+## 🎨 Design Features
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Theme System
+- **Light Theme**: Clean, professional appearance
+- **Dark Theme**: Modern, eye-friendly interface
+- **System Preference**: Automatically matches your OS theme
+- **Smooth Transitions**: Elegant theme switching animations
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Visual Enhancements
+- **Gradient Accents**: Beautiful gradient effects throughout the interface
+- **Hover Effects**: Interactive elements with smooth hover animations
+- **Loading States**: Professional loading indicators
+- **Card-based Layout**: Clean, organized information display
+- **Responsive Design**: Optimized for desktop, tablet, and mobile
 
-Follow these steps:
+## 🛠️ Getting Started
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### Installation
 
-# Step 3: Install the necessary dependencies.
-npm i
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd parse-path
+```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Start the development server:
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+4. Open your browser and navigate to `http://localhost:5173`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 📁 Project Structure
 
-**Use GitHub Codespaces**
+```
+src/
+├── components/
+│   ├── ui/                 # shadcn/ui components
+│   ├── FileUpload.tsx      # File upload component
+│   ├── ParsedResults.tsx   # Results display component
+│   ├── FeatureCard.tsx     # Feature showcase cards
+│   └── Header.tsx          # Navigation header
+├── hooks/
+│   ├── use-theme.ts        # Theme management hook
+│   └── use-toast.ts        # Toast notifications
+├── pages/
+│   ├── Index.tsx           # Main application page
+│   └── NotFound.tsx        # 404 page
+└── lib/
+    └── utils.ts            # Utility functions
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 🎨 Customization
 
-## What technologies are used for this project?
+### Colors
+The application uses CSS custom properties for theming. You can customize colors in `src/index.css`:
 
-This project is built with:
+```css
+:root {
+  --primary: 217 91% 60%;        /* Primary brand color */
+  --background: 0 0% 100%;       /* Light theme background */
+  --foreground: 240 10% 3.9%;    /* Light theme text */
+}
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+.dark {
+  --background: 240 10% 3.9%;    /* Dark theme background */
+  --foreground: 0 0% 98%;        /* Dark theme text */
+}
+```
 
-## How can I deploy this project?
+### Components
+All UI components are built with shadcn/ui and can be customized through Tailwind CSS classes.
 
-Simply open [Lovable](https://lovable.dev/projects/9d6cf7f5-43eb-47ef-b354-8e9036a932c6) and click on Share -> Publish.
+## 🚀 Deployment
 
-## Can I connect a custom domain to my Lovable project?
+### Build for Production
+```bash
+npm run build
+```
 
-Yes, you can!
+### Preview Production Build
+```bash
+npm run preview
+```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## 🤝 Contributing
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+## 🙏 Acknowledgments
+
+- [shadcn/ui](https://ui.shadcn.com/) for the beautiful component library
+- [Tailwind CSS](https://tailwindcss.com/) for the utility-first CSS framework
+- [Lucide React](https://lucide.dev/) for the beautiful icons
+- [Vite](https://vitejs.dev/) for the fast build tool

@@ -1,7 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Upload, FileText, X } from 'lucide-react';
+import { Upload, FileText, X, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { cn } from '@/lib/utils';
 
 interface FileUploadProps {
@@ -36,23 +37,28 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileUpload, onParse, i
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto">
+    <div className="w-full max-w-3xl mx-auto">
       <div
         {...getRootProps()}
         className={cn(
-          "border-2 border-dashed border-upload-border rounded-xl p-12 text-center cursor-pointer transition-all duration-300 hover:border-primary/50 bg-upload-area",
-          isDragActive && "border-primary bg-primary/5",
-          uploadedFile && "border-primary/30"
+          "border-2 border-dashed rounded-2xl p-12 text-center cursor-pointer transition-all duration-300 hover:border-primary/50 bg-upload-area relative overflow-hidden",
+          isDragActive && "border-primary bg-primary/5 scale-105",
+          uploadedFile && "border-primary/30 bg-primary/5"
         )}
       >
         <input {...getInputProps()} />
         
+        {/* Background gradient effect */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/5 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+        
         {uploadedFile ? (
-          <div className="space-y-4">
-            <div className="flex items-center justify-center space-x-3">
-              <FileText className="h-12 w-12 text-primary" />
+          <div className="space-y-6 relative z-10">
+            <div className="flex items-center justify-center space-x-4">
+              <div className="p-3 bg-primary/10 rounded-full">
+                <CheckCircle className="h-8 w-8 text-primary" />
+              </div>
               <div className="text-left">
-                <p className="text-lg font-semibold text-foreground">{uploadedFile.name}</p>
+                <p className="text-xl font-semibold text-foreground">{uploadedFile.name}</p>
                 <p className="text-sm text-muted-foreground">
                   {(uploadedFile.size / (1024 * 1024)).toFixed(2)} MB
                 </p>
@@ -64,21 +70,29 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileUpload, onParse, i
                   e.stopPropagation();
                   removeFile();
                 }}
-                className="h-8 w-8"
+                className="h-10 w-10 hover:bg-destructive/10 hover:text-destructive"
               >
-                <X className="h-4 w-4" />
+                <X className="h-5 w-5" />
               </Button>
             </div>
+            <p className="text-sm text-muted-foreground">
+              File ready for parsing. Click the button below to start.
+            </p>
           </div>
         ) : (
-          <div className="space-y-4">
-            <Upload className="h-16 w-16 text-muted-foreground mx-auto" />
-            <div className="space-y-2">
-              <p className="text-xl font-semibold text-foreground">
-                Drag and drop your file here
-              </p>
+          <div className="space-y-6 relative z-10">
+            <div className="p-6 bg-primary/10 rounded-full w-24 h-24 mx-auto flex items-center justify-center">
+              <Upload className="h-12 w-12 text-primary" />
+            </div>
+            <div className="space-y-3">
+              <h3 className="text-2xl font-semibold text-foreground">
+                {isDragActive ? 'Drop your file here' : 'Drag and drop your resume'}
+              </h3>
               <p className="text-muted-foreground">
-                (PDF, DOCX)
+                Supports PDF, DOCX, and TXT files
+              </p>
+              <p className="text-sm text-muted-foreground">
+                or click to browse files
               </p>
             </div>
           </div>
@@ -86,13 +100,21 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileUpload, onParse, i
       </div>
 
       {uploadedFile && (
-        <div className="mt-6 flex justify-center">
+        <div className="mt-8 flex justify-center">
           <Button
             onClick={onParse}
             disabled={isLoading}
-            className="bg-gradient-primary hover:shadow-glow text-lg px-8 py-6 h-auto font-semibold"
+            size="lg"
+            className="bg-gradient-primary hover:shadow-glow text-lg px-12 py-6 h-auto font-semibold rounded-xl transition-all duration-300 hover:scale-105"
           >
-            {isLoading ? 'Parsing CV...' : 'Parse CV'}
+            {isLoading ? (
+              <div className="flex items-center space-x-2">
+                <LoadingSpinner size="sm" className="text-white" />
+                <span>Parsing Resume...</span>
+              </div>
+            ) : (
+              'Parse Resume'
+            )}
           </Button>
         </div>
       )}
