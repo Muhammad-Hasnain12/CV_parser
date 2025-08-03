@@ -1,82 +1,65 @@
-const multer = require('multer');
-const { parseResume } = require('../backend/services/aiResumeParser');
-
-// Configure multer for memory storage
-const upload = multer({
-  storage: multer.memoryStorage(),
-  limits: {
-    fileSize: 10 * 1024 * 1024, // 10MB limit
+export const config = {
+  api: {
+    bodyParser: false,
   },
-  fileFilter: (req, file, cb) => {
-    const allowedTypes = [
-      'application/pdf',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      'text/plain'
-    ];
-    
-    if (allowedTypes.includes(file.mimetype)) {
-      cb(null, true);
-    } else {
-      cb(new Error('Invalid file type. Only PDF, DOCX, and TXT files are allowed.'), false);
-    }
-  }
-});
+};
 
-// Vercel serverless function
-module.exports = async (req, res) => {
-  // Set CORS headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+import { Readable } from "stream";
 
-  // Handle preflight requests
-  if (req.method === 'OPTIONS') {
+// Helper to parse multipart form data
+async function parseForm(req) {
+  const busboy = (await import("busboy")).default;
+  return new Promise((resolve, reject) => {
+    const bb = busboy({ headers: req.headers });
+    let fileBuffer = Buffer.alloc(0);
+    let fileInfo = {};
+    bb.on("file", (name, file, info) => {
+      fileInfo = info;
+      file.on("data", (data) => {
+        fileBuffer = Buffer.concat([fileBuffer, data]);
+      });
+    });
+    bb.on("finish", () => {
+      resolve({ buffer: fileBuffer, ...fileInfo });
+    });
+    bb.on("error", reject);
+    req.pipe(bb);
+  });
+}
+
+export default async function handler(req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+  if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ success: false, error: 'Method not allowed' });
+  if (req.method !== "POST") {
+    return res.status(405).json({ success: false, error: "Method not allowed" });
   }
 
   try {
-    // Use multer to handle file upload
-    upload.single('resume')(req, res, async (err) => {
-      if (err) {
-        console.error('Multer error:', err);
-        return res.status(400).json({
-          success: false,
-          error: err.message || 'File upload error'
-        });
-      }
+    const { buffer, filename, mimeType } = await parseForm(req);
+    if (!buffer || !filename || !mimeType) {
+      return res.status(400).json({ success: false, error: "No file uploaded" });
+    }
 
-      if (!req.file) {
-        return res.status(400).json({
-          success: false,
-          error: 'No file uploaded'
-        });
-      }
+    // Dynamically import your parser
+    const { parseResume } = await import("../backend/services/aiResumeParser.js");
+    const parsedData = await parseResume(buffer, filename, mimeType);
 
-      const { originalname, mimetype, buffer } = req.file;
-      
-      console.log(`Processing file: ${originalname} (${mimetype})`);
-      console.log(`File size: ${buffer.length} bytes`);
-
-      // Parse the resume
-      const parsedData = await parseResume(buffer, originalname, mimetype);
-      console.log('Parsing completed successfully');
-
-      res.json({
-        success: true,
-        data: parsedData,
-        filename: originalname
-      });
+    res.status(200).json({
+      success: true,
+      data: parsedData,
+      filename,
     });
-
   } catch (error) {
-    console.error('Error parsing resume:', error);
+    console.error("Error parsing resume:", error);
     res.status(500).json({
       success: false,
-      error: error.message || 'Failed to parse resume'
+      error: error.message || "Failed to parse resume",
     });
   }
-}; 
+} 
