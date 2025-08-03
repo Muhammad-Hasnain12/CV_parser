@@ -29,7 +29,7 @@ export const Header: React.FC = () => {
             >
               Features
             </button>
-            <a href="#" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
+            <a href="#about" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
               About
             </a>
           </nav>

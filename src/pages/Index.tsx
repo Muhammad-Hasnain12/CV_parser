@@ -189,6 +189,20 @@ const Index = () => {
         </div>
       </section>
 
+      {/* About Section */}
+      <section id="about" className="py-20 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">About ParsePath</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              ParsePath is an AI-powered resume parser that helps you instantly extract key information from your CV, including skills, experience, education, and contact details. Built with modern web technologies and advanced AI (including Hugging Face and Affinda), ParsePath is designed for accuracy, speed, and ease of use.<br /><br />
+              This project was created by Muhammad Hasnain, a Cyber Security student at FAST University Karachi, passionate about building smart tools for the future of work.<br /><br />
+              Whether you’re a job seeker, recruiter, or developer, ParsePath makes resume data extraction effortless and reliable.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Parsed Results */}
       {(parsedData || isLoading) && (
         <section ref={parsedResultsRef} className="py-20">
@@ -212,7 +226,7 @@ const Index = () => {
                 <Github className="h-5 w-5" />
                 <span>GitHub</span>
               </a>
-              <a href="#" className="flex items-center space-x-2 text-muted-foreground hover:text-primary transition-colors">
+              <a href="mailto:hasnainmemon04@outlook.com" className="flex items-center space-x-2 text-muted-foreground hover:text-primary transition-colors">
                 <Mail className="h-5 w-5" />
                 <span>Contact</span>
               </a>
