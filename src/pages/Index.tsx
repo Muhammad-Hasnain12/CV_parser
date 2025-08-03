@@ -188,7 +188,7 @@ const Index = () => {
             {/* Stats */}
             <div className="flex justify-center items-center space-x-8 mb-12 animate-fade-in-up delay-300">
               <div className="text-center">
-                <div className="text-2xl font-bold text-primary">99%</div>
+                <div className="text-2xl font-bold text-primary">70-80%</div>
                 <div className="text-sm text-muted-foreground">Accuracy</div>
               </div>
               <div className="w-px h-8 bg-border"></div>
@@ -198,7 +198,7 @@ const Index = () => {
               </div>
               <div className="w-px h-8 bg-border"></div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-primary">10k+</div>
+                <div className="text-2xl font-bold text-primary">100+</div>
                 <div className="text-sm text-muted-foreground">Resumes Parsed</div>
               </div>
             </div>
@@ -440,9 +440,9 @@ const Index = () => {
             <div>
               <h3 className="font-semibold mb-4">Product</h3>
               <div className="space-y-2">
-                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors">Features</a>
-                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors">Pricing</a>
-                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors">API</a>
+                <a href="/features" className="block text-muted-foreground hover:text-primary transition-colors">Features</a>
+                <a href="/pricing" className="block text-muted-foreground hover:text-primary transition-colors">Pricing</a>
+                <a href="/api" className="block text-muted-foreground hover:text-primary transition-colors">API</a>
               </div>
             </div>
             
@@ -450,17 +450,17 @@ const Index = () => {
               <h3 className="font-semibold mb-4">Company</h3>
               <div className="space-y-2">
                 <a href="#about" className="block text-muted-foreground hover:text-primary transition-colors">About</a>
-                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors">Blog</a>
-                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors">Careers</a>
+                <a href="/blog" className="block text-muted-foreground hover:text-primary transition-colors">Blog</a>
+                <a href="/careers" className="block text-muted-foreground hover:text-primary transition-colors">Careers</a>
               </div>
             </div>
             
             <div>
               <h3 className="font-semibold mb-4">Support</h3>
               <div className="space-y-2">
-                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors">Help Center</a>
-                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors">Contact</a>
-                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors">Privacy</a>
+                <a href="/help" className="block text-muted-foreground hover:text-primary transition-colors">Help Center</a>
+                <a href="/contact" className="block text-muted-foreground hover:text-primary transition-colors">Contact</a>
+                <a href="/privacy" className="block text-muted-foreground hover:text-primary transition-colors">Privacy</a>
               </div>
             </div>
           </div>
@@ -479,10 +479,10 @@ const Index = () => {
                 <Mail className="h-5 w-5" />
                 <span>Contact</span>
               </a>
-              <a href="#" className="flex items-center space-x-2 text-muted-foreground hover:text-primary transition-colors">
-                <Shield className="h-5 w-5" />
-                <span>Privacy</span>
-              </a>
+                             <a href="/privacy" className="flex items-center space-x-2 text-muted-foreground hover:text-primary transition-colors">
+                 <Shield className="h-5 w-5" />
+                 <span>Privacy</span>
+               </a>
             </div>
           </div>
         </div>
