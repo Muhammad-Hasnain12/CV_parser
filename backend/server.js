@@ -68,7 +68,10 @@ app.get('/api/health', (req, res) => {
 // Resume parsing endpoint
 app.post('/api/parse-resume', upload.single('resume'), async (req, res) => {
   try {
+    console.log('🚀 Resume parsing request received');
+    
     if (!req.file) {
+      console.log('❌ No file uploaded');
       return res.status(400).json({
         success: false,
         error: 'No file uploaded'
@@ -77,10 +80,14 @@ app.post('/api/parse-resume', upload.single('resume'), async (req, res) => {
 
     const { originalname, mimetype, buffer } = req.file;
     
-    console.log(`Processing file: ${originalname} (${mimetype})`);
+    console.log(`📄 Processing file: ${originalname} (${mimetype})`);
+    console.log(`📏 File size: ${buffer.length} bytes`);
 
     // Parse the resume
+    console.log('🔧 Starting resume parsing...');
     const parsedData = await parseResume(buffer, originalname, mimetype);
+    console.log('✅ Parsing completed successfully');
+    console.log('📊 Parsed data keys:', Object.keys(parsedData));
 
     res.json({
       success: true,
@@ -89,7 +96,7 @@ app.post('/api/parse-resume', upload.single('resume'), async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error parsing resume:', error);
+    console.error('💥 Error parsing resume:', error);
     res.status(500).json({
       success: false,
       error: error.message || 'Failed to parse resume'

@@ -3,7 +3,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
-import { User, Mail, Phone, Briefcase, GraduationCap, Star } from 'lucide-react';
+import { User, Mail, Phone, Briefcase, GraduationCap, Star, Link, Github, Linkedin } from 'lucide-react';
 
 interface ParsedData {
   name?: string;
@@ -12,6 +12,9 @@ interface ParsedData {
   skills?: string[];
   experience?: string[];
   education?: string[];
+  certifications?: string[];
+  projects?: string[];
+  links?: string[];
 }
 
 interface ParsedResultsProps {
@@ -63,22 +66,22 @@ export const ParsedResults: React.FC<ParsedResultsProps> = ({ data, isLoading })
               Personal Information
             </h3>
             <div className="grid md:grid-cols-3 gap-4">
-              {data.name && (
+        {data.name && (
                 <div className="p-4 bg-muted/50 rounded-lg">
                   <p className="text-sm text-muted-foreground mb-1">Name</p>
                   <p className="font-semibold text-foreground">{data.name}</p>
-                </div>
-              )}
-              {data.email && (
+          </div>
+        )}
+        {data.email && (
                 <div className="p-4 bg-muted/50 rounded-lg">
                   <p className="text-sm text-muted-foreground mb-1 flex items-center">
                     <Mail className="h-3 w-3 mr-1" />
                     Email
                   </p>
                   <p className="font-semibold text-foreground">{data.email}</p>
-                </div>
-              )}
-              {data.phone && (
+          </div>
+        )}
+        {data.phone && (
                 <div className="p-4 bg-muted/50 rounded-lg">
                   <p className="text-sm text-muted-foreground mb-1 flex items-center">
                     <Phone className="h-3 w-3 mr-1" />
@@ -138,6 +141,72 @@ export const ParsedResults: React.FC<ParsedResultsProps> = ({ data, isLoading })
                   <p className="text-foreground">{edu}</p>
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+
+        {/* Certifications */}
+        {data.certifications && data.certifications.length > 0 && (
+          <div className="space-y-4">
+            <h3 className="text-xl font-semibold text-foreground flex items-center">
+              <Star className="h-5 w-5 mr-2 text-primary" />
+              Certifications
+            </h3>
+            <div className="space-y-3">
+              {data.certifications.map((cert, index) => (
+                <div key={index} className="p-4 bg-muted/30 rounded-lg border-l-4 border-primary/20">
+                  <p className="text-foreground">{cert}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Projects */}
+        {data.projects && data.projects.length > 0 && (
+          <div className="space-y-4">
+            <h3 className="text-xl font-semibold text-foreground flex items-center">
+              <Briefcase className="h-5 w-5 mr-2 text-primary" />
+              Projects
+            </h3>
+            <div className="space-y-3">
+              {data.projects.map((project, index) => (
+                <div key={index} className="p-4 bg-muted/30 rounded-lg border-l-4 border-primary/20">
+                  <p className="text-foreground">{project}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Social Links */}
+        {data.links && data.links.length > 0 && (
+          <div className="space-y-4">
+            <h3 className="text-xl font-semibold text-foreground flex items-center">
+              <Link className="h-5 w-5 mr-2 text-primary" />
+              Social Links
+            </h3>
+            <div className="flex flex-wrap gap-3">
+              {data.links.map((link, index) => {
+                const isGithub = link.includes('github.com');
+                const isLinkedin = link.includes('linkedin.com');
+                const Icon = isGithub ? Github : isLinkedin ? Linkedin : Link;
+                
+                return (
+                  <a
+                    key={index}
+                    href={link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center space-x-2 px-4 py-2 bg-muted/50 rounded-lg hover:bg-muted transition-colors"
+                  >
+                    <Icon className="h-4 w-4" />
+                    <span className="text-sm font-medium">
+                      {isGithub ? 'GitHub' : isLinkedin ? 'LinkedIn' : 'Website'}
+                    </span>
+                  </a>
+                );
+              })}
             </div>
           </div>
         )}

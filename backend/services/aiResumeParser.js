@@ -39,9 +39,22 @@ class AIResumeParser {
   async parseResume(buffer, filename, mimetype) {
     try {
       if (this.aiProvider === 'affinda') {
-        // Use Affinda API for parsing
-        return await parseResumeWithAffinda(buffer, filename);
+        console.log('🤖 Using Affinda for parsing...');
+        try {
+          // Use Affinda API for parsing
+          const affindaResult = await parseResumeWithAffinda(buffer, filename);
+          console.log('✅ Affinda parsing successful');
+          return affindaResult;
+        } catch (affindaError) {
+          console.error('❌ Affinda parsing failed, falling back to rule-based parsing:', affindaError.message);
+          console.log('🔄 Switching to rule-based parsing...');
+          
+          // Extract text and use rule-based parsing as fallback
+          const text = await this.extractText(buffer, mimetype);
+          return this.fallbackParsing(text, filename);
+        }
       }
+      
       // Extract text from file
       const text = await this.extractText(buffer, mimetype);
       
@@ -50,7 +63,7 @@ class AIResumeParser {
       
       return parsedData;
     } catch (error) {
-      console.error('AI Resume Parser Error:', error);
+      console.error('💥 AI Resume Parser Error:', error);
       throw error;
     }
   }
@@ -178,6 +191,7 @@ JSON RESPONSE:`;
       const phone = this.extractPhone(text);
       const certifications = this.extractCertifications(lines);
       const projects = this.extractProjects(lines);
+      const links = this.extractSocialLinks(text);
       return {
         name,
         email,
@@ -186,7 +200,8 @@ JSON RESPONSE:`;
         experience,
         education,
         certifications,
-        projects
+        projects,
+        links
       };
     } catch (error) {
       console.error('HuggingFace parsing failed:', error);
@@ -389,7 +404,8 @@ JSON RESPONSE:`;
       experience: this.extractExperience(lines),
       education: this.extractEducation(lines),
       certifications: this.extractCertifications(lines),
-      projects: this.extractProjects(lines)
+      projects: this.extractProjects(lines),
+      links: this.extractSocialLinks(text)
     };
   }
 
@@ -441,19 +457,61 @@ JSON RESPONSE:`;
 
   extractSkills(text) {
     const skills = [
-      'javascript', 'python', 'java', 'react', 'node.js', 'angular', 'vue.js',
-      'html', 'css', 'sql', 'mongodb', 'postgresql', 'mysql', 'aws', 'azure',
-      'docker', 'kubernetes', 'git', 'agile', 'scrum', 'machine learning',
-      'data analysis', 'excel', 'powerpoint', 'word', 'photoshop', 'illustrator',
-      'figma', 'sketch', 'ui/ux', 'responsive design', 'api', 'rest', 'graphql',
-      'typescript', 'php', 'ruby', 'go', 'rust', 'c++', 'c#', '.net', 'spring',
-      'django', 'flask', 'express', 'fastapi', 'laravel', 'rails', 'tensorflow',
-      'pytorch', 'scikit-learn', 'pandas', 'numpy', 'matplotlib', 'seaborn',
-      'tableau', 'power bi', 'jira', 'confluence', 'slack', 'zoom'
+      // Programming Languages
+      'javascript', 'python', 'java', 'c++', 'c#', 'php', 'ruby', 'go', 'rust', 'swift', 'kotlin', 'scala', 'r', 'matlab',
+      'typescript', 'dart', 'perl', 'bash', 'powershell', 'assembly', 'cobol', 'fortran',
+      
+      // Web Technologies
+      'html', 'css', 'react', 'angular', 'vue.js', 'node.js', 'express', 'django', 'flask', 'laravel', 'rails',
+      'spring', 'asp.net', 'jsp', 'servlets', 'jquery', 'bootstrap', 'sass', 'less', 'webpack', 'babel',
+      
+      // Databases
+      'sql', 'mysql', 'postgresql', 'mongodb', 'redis', 'oracle', 'sqlite', 'mariadb', 'cassandra', 'neo4j',
+      
+      // Cloud & DevOps
+      'aws', 'azure', 'gcp', 'docker', 'kubernetes', 'jenkins', 'git', 'github', 'gitlab', 'bitbucket',
+      'terraform', 'ansible', 'chef', 'puppet', 'vagrant', 'nginx', 'apache',
+      
+      // Data Science & ML
+      'machine learning', 'deep learning', 'tensorflow', 'pytorch', 'scikit-learn', 'pandas', 'numpy',
+      'matplotlib', 'seaborn', 'plotly', 'jupyter', 'spark', 'hadoop', 'kafka', 'elasticsearch',
+      
+      // Tools & Software
+      'excel', 'powerpoint', 'word', 'photoshop', 'illustrator', 'figma', 'sketch', 'invision', 'zeplin',
+      'tableau', 'power bi', 'jira', 'confluence', 'slack', 'zoom', 'teams', 'trello', 'asana',
+      
+      // Frameworks & Libraries
+      'fastapi', 'fastify', 'koa', 'hapi', 'sails.js', 'meteor', 'ember.js', 'backbone.js', 'knockout.js',
+      'socket.io', 'graphql', 'rest', 'soap', 'grpc', 'thrift', 'protobuf',
+      
+      // Mobile Development
+      'react native', 'flutter', 'xamarin', 'ionic', 'cordova', 'phonegap', 'android studio', 'xcode',
+      
+      // Other Technologies
+      'blockchain', 'ethereum', 'solidity', 'web3', 'iot', 'arduino', 'raspberry pi', 'opencv',
+      'computer vision', 'nlp', 'natural language processing', 'ai', 'artificial intelligence'
     ];
 
     const lowerText = text.toLowerCase();
-    const foundSkills = skills.filter(skill => lowerText.includes(skill.toLowerCase()));
+    
+    // Common words to exclude (these appear in resumes but aren't skills)
+    const excludeWords = [
+      'team', 'teams', 'work', 'working', 'worked', 'experience', 'project', 'projects',
+      'development', 'develop', 'developed', 'analysis', 'analyze', 'analyzed',
+      'management', 'manage', 'managed', 'leadership', 'lead', 'led', 'communication',
+      'collaboration', 'collaborate', 'collaborated', 'problem solving', 'problem-solving',
+      'critical thinking', 'time management', 'organization', 'organized'
+    ];
+
+    const foundSkills = skills.filter(skill => {
+      // Check if skill is in text
+      const hasSkill = lowerText.includes(skill.toLowerCase());
+      
+      // Exclude if it's in the exclude list
+      const notExcluded = !excludeWords.includes(skill.toLowerCase());
+      
+      return hasSkill && notExcluded;
+    });
     
     return [...new Set(foundSkills)];
   }
@@ -598,6 +656,20 @@ JSON RESPONSE:`;
       }
     }
     return projects.slice(0, 5);
+  }
+
+  extractSocialLinks(text) {
+    const links = [];
+    // GitHub links only
+    const githubRegex = /(?:github\.com\/|github:?\s*)([a-zA-Z0-9_-]+)/gi;
+    const githubMatches = text.match(githubRegex);
+    if (githubMatches) {
+      githubMatches.forEach(match => {
+        const username = match.replace(/github\.com\/|github:?\s*/gi, '');
+        links.push(`https://github.com/${username}`);
+      });
+    }
+    return [...new Set(links)];
   }
 }
 
