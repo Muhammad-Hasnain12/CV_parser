@@ -315,6 +315,5 @@ class AIResumeParser {
 
 const aiResumeParser = new AIResumeParser();
 
-module.exports = {
-  parseResume: (buffer, filename, mimetype) => aiResumeParser.parseResume(buffer, filename, mimetype)
-}; 
+export const parseResume = (buffer, filename, mimetype) =>
+  aiResumeParser.parseResume(buffer, filename, mimetype); 
