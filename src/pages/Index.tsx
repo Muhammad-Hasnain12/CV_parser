@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { FileUpload } from '@/components/FileUpload';
 import { FeatureCard } from '@/components/FeatureCard';
 import { ParsedResults } from '@/components/ParsedResults';
@@ -15,12 +15,7 @@ const Index = () => {
   const { toast } = useToast();
   const parsedResultsRef = useRef<HTMLDivElement>(null);
 
-  // Check backend connection on component mount
-  useEffect(() => {
-    checkBackendConnection();
-  }, []);
-
-  const checkBackendConnection = async () => {
+  const checkBackendConnection = useCallback(async () => {
     try {
       const isConnected = await ApiService.checkHealth();
       setIsBackendConnected(isConnected);
@@ -36,7 +31,12 @@ const Index = () => {
       console.error('Backend connection check failed:', error);
       setIsBackendConnected(false);
     }
-  };
+  }, [toast]);
+
+  // Check backend connection on component mount
+  useEffect(() => {
+    checkBackendConnection();
+  }, [checkBackendConnection]);
 
   const handleFileUpload = (file: File) => {
     setUploadedFile(file);

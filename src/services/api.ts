@@ -1,6 +1,7 @@
+// Use relative URLs for better Vercel deployment compatibility
 const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://cv-parser-2lpgads3s-muhammad-hasnains-projects-70797c00.vercel.app/api'
-  : 'http://localhost:5000/api';
+  ? '/api'  // Use relative path for production (Vercel)
+  : 'http://localhost:5000/api';  // Use local backend for development
 
 export interface ParsedResumeData {
   name?: string;
@@ -9,6 +10,9 @@ export interface ParsedResumeData {
   skills?: string[];
   experience?: string[];
   education?: string[];
+  certifications?: string[];
+  projects?: string[];
+  links?: string[];
 }
 
 export interface ApiResponse {
