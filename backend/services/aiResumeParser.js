@@ -1,19 +1,14 @@
 const pdfParse = require('pdf-parse');
 const mammoth = require('mammoth');
-const { parseResumeWithAffinda } = require('./affindaParser');
 
 class AIResumeParser {
   constructor() {
-    this.aiProvider = process.env.AI_PROVIDER || 'affinda';
+    // Using rule-based parsing only
   }
 
   async parseResume(buffer, filename, mimetype) {
     try {
-      if (this.aiProvider === 'affinda') {
-        // Use Affinda API for parsing
-        return await parseResumeWithAffinda(buffer, filename);
-      }
-      // Fallback: rule-based extraction
+      // Always use rule-based extraction
       const text = await this.extractText(buffer, mimetype);
       return this.fallbackParsing(text, filename);
     } catch (error) {
