@@ -536,7 +536,7 @@ class AIResumeParser {
   extractSocialLinksAdvanced(text) {
     const links = [];
     
-    // GitHub
+    // GitHub links only - more accurate extraction
     const githubRegex = /(https?:\/\/)?(www\.)?github\.com\/[A-Za-z0-9_-]+/g;
     const githubLinks = text.match(githubRegex);
     if (githubLinks) {
@@ -545,7 +545,7 @@ class AIResumeParser {
       ));
     }
     
-    // LinkedIn
+    // LinkedIn links - professional profiles
     const linkedinRegex = /(https?:\/\/)?(www\.)?linkedin\.com\/in\/[A-Za-z0-9_-]+/g;
     const linkedinLinks = text.match(linkedinRegex);
     if (linkedinLinks) {
@@ -554,21 +554,7 @@ class AIResumeParser {
       ));
     }
     
-    // Portfolio/Personal websites
-    const websiteRegex = /(https?:\/\/)?(www\.)?[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g;
-    const websites = text.match(websiteRegex);
-    if (websites) {
-      const filteredWebsites = websites.filter(site => 
-        !site.includes('github.com') && 
-        !site.includes('linkedin.com') &&
-        !site.includes('gmail.com') &&
-        !site.includes('outlook.com')
-      );
-      links.push(...filteredWebsites.map(site => 
-        site.startsWith('http') ? site : `https://${site}`
-      ));
-    }
-    
+    // Remove general website extraction - only GitHub and LinkedIn
     return [...new Set(links)];
   }
 }
