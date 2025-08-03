@@ -451,7 +451,6 @@ const Index = () => {
               <div className="space-y-2">
                 <a href="#about" className="block text-muted-foreground hover:text-primary transition-colors">About</a>
                 <a href="/blog" className="block text-muted-foreground hover:text-primary transition-colors">Blog</a>
-                <a href="/careers" className="block text-muted-foreground hover:text-primary transition-colors">Careers</a>
               </div>
             </div>
             
