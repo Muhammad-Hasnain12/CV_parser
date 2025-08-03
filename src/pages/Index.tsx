@@ -208,7 +208,7 @@ const Index = () => {
             </div>
             
             <div className="flex space-x-8">
-              <a href="#" className="flex items-center space-x-2 text-muted-foreground hover:text-primary transition-colors">
+              <a href="https://github.com/Muhammad-Hasnain12" className="flex items-center space-x-2 text-muted-foreground hover:text-primary transition-colors" target="_blank" rel="noopener noreferrer">
                 <Github className="h-5 w-5" />
                 <span>GitHub</span>
               </a>

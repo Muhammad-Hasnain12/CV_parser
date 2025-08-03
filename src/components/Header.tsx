@@ -36,10 +36,15 @@ export const Header: React.FC = () => {
           
           <div className="flex items-center space-x-2">
             <ThemeToggle />
-            <Button variant="outline" size="sm" className="hidden md:flex">
+            <a
+              href="https://github.com/Muhammad-Hasnain12"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden md:flex items-center border rounded-md px-3 py-1.5 text-sm font-medium hover:text-primary transition-colors"
+            >
               <Github className="h-4 w-4 mr-2" />
               GitHub
-            </Button>
+            </a>
           </div>
         </div>
       </div>
