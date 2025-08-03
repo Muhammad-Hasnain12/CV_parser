@@ -449,7 +449,7 @@ JSON RESPONSE:`;
       'typescript', 'php', 'ruby', 'go', 'rust', 'c++', 'c#', '.net', 'spring',
       'django', 'flask', 'express', 'fastapi', 'laravel', 'rails', 'tensorflow',
       'pytorch', 'scikit-learn', 'pandas', 'numpy', 'matplotlib', 'seaborn',
-      'tableau', 'power bi', 'jira', 'confluence', 'slack', 'teams', 'zoom'
+      'tableau', 'power bi', 'jira', 'confluence', 'slack', 'zoom'
     ];
 
     const lowerText = text.toLowerCase();
