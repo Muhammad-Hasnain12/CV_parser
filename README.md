@@ -1,4 +1,4 @@
-# ParsePath - AI-Powered Resume Parser
+# Resume/CV Parser - AI-Powered Resume Parser
 
 A modern, beautiful web application for parsing resumes and extracting key information using AI technology.
 
