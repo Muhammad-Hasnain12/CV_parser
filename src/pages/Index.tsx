@@ -172,8 +172,10 @@ const Index = () => {
               AI-Powered Resume Parsing
             </div>
             
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent leading-tight animate-fade-in-up">
-              Extract Insights
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight animate-fade-in-up">
+              <span className="bg-gradient-to-r from-primary-dark via-primary to-primary-dark bg-clip-text text-transparent">
+                Extract Insights
+              </span>
               <br />
               <span className="bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent">
                 from Your Resume

@@ -177,13 +177,13 @@ export const ParsedResults: React.FC<ParsedResultsProps> = ({ data, isLoading })
               </div>
               <div className="space-y-4">
                 {data.experience.map((exp, index) => (
-                  <div key={index} className="p-6 bg-gradient-to-br from-card/50 to-card/80 rounded-2xl border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg">
-                    <div className="flex items-start space-x-4">
+                  <div key={index} className="p-4 sm:p-6 bg-gradient-to-br from-card/50 to-card/80 rounded-2xl border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg">
+                    <div className="flex items-start space-x-3 sm:space-x-4">
                       <div className="p-2 bg-primary/10 rounded-lg mt-1">
                         <TrendingUp className="h-4 w-4 text-primary" />
                       </div>
-                      <div className="flex-1">
-                        <p className="text-lg font-semibold text-foreground">{exp}</p>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-base sm:text-lg font-semibold text-foreground break-words whitespace-pre-wrap leading-relaxed">{exp}</p>
                       </div>
                     </div>
                   </div>
@@ -203,13 +203,13 @@ export const ParsedResults: React.FC<ParsedResultsProps> = ({ data, isLoading })
               </div>
               <div className="space-y-4">
                 {data.education.map((edu, index) => (
-                  <div key={index} className="p-6 bg-gradient-to-br from-card/50 to-card/80 rounded-2xl border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg">
-                    <div className="flex items-start space-x-4">
+                  <div key={index} className="p-4 sm:p-6 bg-gradient-to-br from-card/50 to-card/80 rounded-2xl border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg">
+                    <div className="flex items-start space-x-3 sm:space-x-4">
                       <div className="p-2 bg-primary/10 rounded-lg mt-1">
                         <Award className="h-4 w-4 text-primary" />
                       </div>
-                      <div className="flex-1">
-                        <p className="text-lg font-semibold text-foreground">{edu}</p>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-base sm:text-lg font-semibold text-foreground break-words whitespace-pre-wrap leading-relaxed">{edu}</p>
                       </div>
                     </div>
                   </div>
@@ -229,13 +229,13 @@ export const ParsedResults: React.FC<ParsedResultsProps> = ({ data, isLoading })
               </div>
               <div className="space-y-4">
                 {data.certifications.map((cert, index) => (
-                  <div key={index} className="p-6 bg-gradient-to-br from-card/50 to-card/80 rounded-2xl border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg">
-                    <div className="flex items-start space-x-4">
+                  <div key={index} className="p-4 sm:p-6 bg-gradient-to-br from-card/50 to-card/80 rounded-2xl border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg">
+                    <div className="flex items-start space-x-3 sm:space-x-4">
                       <div className="p-2 bg-primary/10 rounded-lg mt-1">
                         <CheckCircle className="h-4 w-4 text-primary" />
                       </div>
-                      <div className="flex-1">
-                        <p className="text-lg font-semibold text-foreground">{cert}</p>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-base sm:text-lg font-semibold text-foreground break-words whitespace-pre-wrap leading-relaxed">{cert}</p>
                       </div>
                     </div>
                   </div>
@@ -255,13 +255,13 @@ export const ParsedResults: React.FC<ParsedResultsProps> = ({ data, isLoading })
               </div>
               <div className="space-y-4">
                 {data.projects.map((project, index) => (
-                  <div key={index} className="p-6 bg-gradient-to-br from-card/50 to-card/80 rounded-2xl border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg">
-                    <div className="flex items-start space-x-4">
+                  <div key={index} className="p-4 sm:p-6 bg-gradient-to-br from-card/50 to-card/80 rounded-2xl border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg">
+                    <div className="flex items-start space-x-3 sm:space-x-4">
                       <div className="p-2 bg-primary/10 rounded-lg mt-1">
                         <Star className="h-4 w-4 text-primary" />
                       </div>
-                      <div className="flex-1">
-                        <p className="text-lg font-semibold text-foreground">{project}</p>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-base sm:text-lg font-semibold text-foreground break-words whitespace-pre-wrap leading-relaxed">{project}</p>
                       </div>
                     </div>
                   </div>
