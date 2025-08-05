@@ -34,6 +34,7 @@ const Index = () => {
   const [parsedData, setParsedData] = useState<ParsedResumeData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isBackendConnected, setIsBackendConnected] = useState(false);
+  const [isCheckingBackend, setIsCheckingBackend] = useState(true);
   const { toast } = useToast();
   const parsedResultsRef = useRef<HTMLDivElement>(null);
 
@@ -52,6 +53,8 @@ const Index = () => {
     } catch (error) {
       console.error('Backend connection check failed:', error);
       setIsBackendConnected(false);
+    } finally {
+      setIsCheckingBackend(false);
     }
   }, [toast]);
 
@@ -138,7 +141,7 @@ const Index = () => {
       <Header />
       
       {/* Backend Status Indicator */}
-      {!isBackendConnected && (
+      {!isCheckingBackend && !isBackendConnected && (
         <div className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border-b border-yellow-500/20">
           <div className="container mx-auto px-4 py-3">
             <div className="flex items-center justify-center space-x-2 text-yellow-600 dark:text-yellow-400">
