@@ -3,17 +3,9 @@ const API_BASE_URL = process.env.NODE_ENV === 'production'
   ? '/api'  // Use relative path for production (Vercel)
   : 'http://localhost:5000/api';  // Use local backend for development
 
-export interface ParsedResumeData {
-  name?: string;
-  email?: string;
-  phone?: string;
-  skills?: string[];
-  experience?: string[];
-  education?: string[];
-  certifications?: string[];
-  projects?: string[];
-  links?: string[];
-}
+import { ParsedData } from '@/utils/csvUtils';
+
+export type ParsedResumeData = ParsedData;
 
 export interface ApiResponse {
   success: boolean;

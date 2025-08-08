@@ -3,6 +3,9 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
+import { downloadCSV, ParsedData } from '@/utils/csvUtils';
 import { 
   User, 
   Mail, 
@@ -19,20 +22,9 @@ import {
   MapPin,
   ExternalLink,
   CheckCircle,
-  TrendingUp
+  TrendingUp,
+  Download
 } from 'lucide-react';
-
-interface ParsedData {
-  name?: string;
-  email?: string;
-  phone?: string;
-  skills?: string[];
-  experience?: string[];
-  education?: string[];
-  certifications?: string[];
-  projects?: string[];
-  links?: string[];
-}
 
 interface ParsedResultsProps {
   data: ParsedData | null;
@@ -40,6 +32,29 @@ interface ParsedResultsProps {
 }
 
 export const ParsedResults: React.FC<ParsedResultsProps> = ({ data, isLoading }) => {
+  const { toast } = useToast();
+
+  const handleDownloadCSV = () => {
+    if (data) {
+      try {
+        const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+        const filename = `resume_data_${timestamp}.csv`;
+        downloadCSV(data, filename);
+        
+        toast({
+          title: "CSV Downloaded",
+          description: `Resume data has been downloaded as ${filename}`,
+        });
+      } catch (error) {
+        toast({
+          title: "Download Failed",
+          description: "Failed to download CSV file. Please try again.",
+          variant: "destructive",
+        });
+      }
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="max-w-6xl mx-auto">
@@ -96,7 +111,16 @@ export const ParsedResults: React.FC<ParsedResultsProps> = ({ data, isLoading })
             Parsing Complete
           </div>
           <h2 className="text-4xl font-bold text-foreground mb-4">Extracted Information</h2>
-          <p className="text-lg text-muted-foreground">Here's what we found in your resume</p>
+          <p className="text-lg text-muted-foreground mb-6">Here's what we found in your resume</p>
+          
+          {/* Download CSV Button */}
+          <Button
+            onClick={handleDownloadCSV}
+            className="inline-flex items-center space-x-2 bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 rounded-xl font-medium transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
+          >
+            <Download className="h-5 w-5" />
+            <span>Download as CSV</span>
+          </Button>
         </div>
         
         <div className="space-y-12">
