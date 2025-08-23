@@ -10,6 +10,7 @@ import Features from "./pages/Features";
 import Pricing from "./pages/Pricing";
 import API from "./pages/API";
 import Blog from "./pages/Blog";
+import Careers from "./pages/Careers";
 import HelpCenter from "./pages/HelpCenter";
 import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy";
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/api" element={<API />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/careers" element={<Careers />} />
             <Route path="/help" element={<HelpCenter />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/privacy" element={<Privacy />} />
