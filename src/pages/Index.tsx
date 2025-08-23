@@ -24,7 +24,8 @@ import {
   Play,
   Award,
   Users,
-  Clock
+  Clock,
+  Linkedin
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { ApiService, ParsedResumeData } from '@/services/api';
@@ -447,7 +448,6 @@ const Index = () => {
               <div className="space-y-2">
                 <a href="/features" className="block text-muted-foreground hover:text-primary transition-colors">Features</a>
                 <a href="/pricing" className="block text-muted-foreground hover:text-primary transition-colors">Pricing</a>
-                <a href="/api" className="block text-muted-foreground hover:text-primary transition-colors">API</a>
               </div>
             </div>
             
@@ -455,7 +455,7 @@ const Index = () => {
               <h3 className="font-semibold mb-4">Company</h3>
               <div className="space-y-2">
                 <a href="#about" className="block text-muted-foreground hover:text-primary transition-colors">About</a>
-                <a href="/blog" className="block text-muted-foreground hover:text-primary transition-colors">Blog</a>
+                <a href="/careers" className="block text-muted-foreground hover:text-primary transition-colors">Careers</a>
               </div>
             </div>
             
@@ -479,7 +479,11 @@ const Index = () => {
                 <Github className="h-5 w-5" />
                 <span>GitHub</span>
               </a>
-              <a href="mailto:hasnainmemon04@outlook.com" className="flex items-center space-x-2 text-muted-foreground hover:text-primary transition-colors">
+              <a href="https://www.linkedin.com/in/muhammad-hasnain-61b4aa379/" className="flex items-center space-x-2 text-muted-foreground hover:text-primary transition-colors" target="_blank" rel="noopener noreferrer">
+                <Linkedin className="h-5 w-5" />
+                <span>LinkedIn</span>
+              </a>
+              <a href="mailto:hasnainmemon02@outlook.com" className="flex items-center space-x-2 text-muted-foreground hover:text-primary transition-colors">
                 <Mail className="h-5 w-5" />
                 <span>Contact</span>
               </a>

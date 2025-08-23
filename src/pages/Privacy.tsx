@@ -231,11 +231,15 @@ const Privacy = () => {
                   <ul className="space-y-2 ml-6">
                     <li className="flex items-start space-x-2">
                       <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                      <span>Email: hasnainmemon04@outlook.com</span>
+                      <span>Email: hasnainmemon02@outlook.com</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                       <span>GitHub: github.com/Muhammad-Hasnain12</span>
+                    </li>
+                    <li className="flex items-start space-x-2">
+                      <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                      <span>LinkedIn: linkedin.com/in/muhammad-hasnain-61b4aa379</span>
                     </li>
                   </ul>
                 </div>

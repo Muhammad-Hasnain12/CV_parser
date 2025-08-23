@@ -9,7 +9,8 @@ import {
   ArrowRight,
   Star,
   Clock,
-  Globe
+  Globe,
+  Linkedin
 } from 'lucide-react';
 
 const Contact = () => {
@@ -53,7 +54,7 @@ const Contact = () => {
             </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
             <div className="text-center p-8 rounded-2xl bg-card border border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
               <div className="p-4 bg-primary/10 rounded-xl w-16 h-16 flex items-center justify-center mx-auto mb-6">
                 <Mail className="h-8 w-8 text-primary" />
@@ -61,11 +62,11 @@ const Contact = () => {
               <h3 className="text-xl font-semibold mb-3">Email</h3>
               <p className="text-muted-foreground mb-4">Send us a detailed message</p>
               <a 
-                href="mailto:hasnainmemon04@outlook.com" 
-                className="inline-flex items-center space-x-2 text-primary hover:text-primary/80 transition-colors font-semibold"
+                href="mailto:hasnainmemon02@outlook.com" 
+                className="inline-flex items-center justify-center space-x-2 text-primary hover:text-primary/80 transition-colors font-semibold w-full px-2"
               >
-                <span>hasnainmemon04@outlook.com</span>
-                <ArrowRight className="h-4 w-4" />
+                <span className="text-sm sm:text-base break-all">hasnainmemon02@outlook.com</span>
+                <ArrowRight className="h-4 w-4 flex-shrink-0" />
               </a>
             </div>
             
@@ -82,6 +83,23 @@ const Contact = () => {
                 className="inline-flex items-center space-x-2 text-primary hover:text-primary/80 transition-colors font-semibold"
               >
                 <span>GitHub Profile</span>
+                <ArrowRight className="h-4 w-4" />
+              </a>
+            </div>
+            
+            <div className="text-center p-8 rounded-2xl bg-card border border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+              <div className="p-4 bg-primary/10 rounded-xl w-16 h-16 flex items-center justify-center mx-auto mb-6">
+                <Linkedin className="h-8 w-8 text-primary" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">LinkedIn</h3>
+              <p className="text-muted-foreground mb-4">Connect with us professionally</p>
+              <a 
+                href="https://www.linkedin.com/in/muhammad-hasnain-61b4aa379/" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center space-x-2 text-primary hover:text-primary/80 transition-colors font-semibold"
+              >
+                <span>LinkedIn Profile</span>
                 <ArrowRight className="h-4 w-4" />
               </a>
             </div>
@@ -131,7 +149,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <p className="font-semibold">Email</p>
-                      <p className="text-muted-foreground">hasnainmemon04@outlook.com</p>
+                      <p className="text-muted-foreground">hasnainmemon02@outlook.com</p>
                     </div>
                   </div>
                   
