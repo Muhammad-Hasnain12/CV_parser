@@ -82,9 +82,9 @@ const HelpCenter = () => {
     },
     {
       icon: <Download className="h-6 w-6" />,
-      title: "API Documentation",
-      description: "Integrate ParsePath into your app",
-      link: "/api"
+      title: "Download Guide",
+      description: "Learn how to save your parsed results",
+      link: "#download"
     }
   ];
 
@@ -207,22 +207,7 @@ const HelpCenter = () => {
             </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <div className="text-center p-8 rounded-2xl bg-card border border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-xl">
-              <div className="p-4 bg-primary/10 rounded-xl w-16 h-16 flex items-center justify-center mx-auto mb-6">
-                <MessageCircle className="h-8 w-8 text-primary" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Live Chat</h3>
-              <p className="text-muted-foreground mb-4">Get instant help from our support team</p>
-              <a 
-                href="#" 
-                className="inline-flex items-center space-x-2 text-primary hover:text-primary/80 transition-colors font-semibold"
-              >
-                <span>Start Chat</span>
-                <ArrowRight className="h-4 w-4" />
-              </a>
-            </div>
-            
+          <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
             <div className="text-center p-8 rounded-2xl bg-card border border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-xl">
               <div className="p-4 bg-primary/10 rounded-xl w-16 h-16 flex items-center justify-center mx-auto mb-6">
                 <Mail className="h-8 w-8 text-primary" />
@@ -242,13 +227,13 @@ const HelpCenter = () => {
               <div className="p-4 bg-primary/10 rounded-xl w-16 h-16 flex items-center justify-center mx-auto mb-6">
                 <FileText className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Documentation</h3>
-              <p className="text-muted-foreground mb-4">Browse our comprehensive guides</p>
+              <h3 className="text-xl font-semibold mb-3">User Guide</h3>
+              <p className="text-muted-foreground mb-4">Browse our comprehensive help guides</p>
               <a 
-                href="/api" 
+                href="/contact" 
                 className="inline-flex items-center space-x-2 text-primary hover:text-primary/80 transition-colors font-semibold"
               >
-                <span>View Docs</span>
+                <span>Contact Us</span>
                 <ArrowRight className="h-4 w-4" />
               </a>
             </div>
