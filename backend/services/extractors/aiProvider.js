@@ -1,7 +1,15 @@
 const { OpenAI } = require('openai');
 const { Anthropic } = require('@anthropic-ai/sdk');
 const { HfInference } = require('@huggingface/inference');
-const fetch = require('node-fetch');
+
+// Dynamic fetch helper to avoid require() of ES Module node-fetch
+const getFetch = async () => {
+  if (typeof global.fetch === 'function') {
+    return global.fetch;
+  }
+  const { default: f } = await import('node-fetch');
+  return f;
+};
 
 const EXTRACTION_PROMPT = `
 You are a professional resume parsing engine. Extract structured details from the following resume text.
@@ -75,7 +83,8 @@ async function parseWithAI(text) {
         }
       };
 
-      const response = await fetch(url, {
+      const fetchFn = await getFetch();
+      const response = await fetchFn(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
