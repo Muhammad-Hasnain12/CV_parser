@@ -9,7 +9,6 @@ import {
   User, 
   Mail, 
   Phone, 
-  MapPin,
   Briefcase, 
   GraduationCap, 
   Star, 
@@ -21,8 +20,7 @@ import {
   Code,
   Download,
   Sparkles,
-  LayoutGrid,
-  FileText
+  LayoutGrid
 } from 'lucide-react';
 
 interface ParsedResultsProps {
@@ -99,14 +97,34 @@ export const ParsedResults: React.FC<ParsedResultsProps> = ({ data, isLoading })
   // Parse location if possible from name/phone or use default
   const locationValue = data.name === "John Doe" ? "New York, NY, USA" : "Not Specified";
 
+  // Helper to render confidence score badges
+  const renderConfidenceBadge = (score?: number) => {
+    if (score === undefined) return null;
+    
+    const colorClass = score >= 80 
+      ? 'bg-emerald-50 text-emerald-600 border-emerald-250 dark:bg-emerald-950/20 dark:text-emerald-400' 
+      : score >= 50 
+        ? 'bg-amber-50 text-amber-600 border-amber-250 dark:bg-amber-950/20 dark:text-amber-400' 
+        : 'bg-rose-50 text-rose-600 border-rose-250 dark:bg-rose-950/20 dark:text-rose-400';
+
+    return (
+      <span className={`inline-flex items-center rounded-md border px-1.5 py-0.5 text-[9px] font-semibold ${colorClass} select-none`}>
+        {score}% Confidence
+      </span>
+    );
+  };
+
   // Individual card components
   const renderPersonalInfo = () => (
     <Card className="p-6 border border-slate-200 bg-white shadow-sm space-y-5 h-full">
-      <div className="flex items-center space-x-2.5 pb-2 border-b border-slate-100">
-        <div className="p-2 bg-indigo-50 text-[#4f46e5] rounded-lg">
-          <User className="h-4.5 w-4.5" />
+      <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+        <div className="flex items-center space-x-2.5">
+          <div className="p-2 bg-indigo-50 text-[#4f46e5] rounded-lg">
+            <User className="h-4.5 w-4.5" />
+          </div>
+          <h3 className="text-sm font-semibold text-slate-800">Personal Information</h3>
         </div>
-        <h3 className="text-sm font-semibold text-slate-800">Personal Information</h3>
+        {renderConfidenceBadge(data.confidenceScores?.personal)}
       </div>
       <div className="space-y-3.5 text-xs">
         <div className="grid grid-cols-3 gap-2">
@@ -131,11 +149,14 @@ export const ParsedResults: React.FC<ParsedResultsProps> = ({ data, isLoading })
 
   const renderSummary = () => (
     <Card className="p-6 border border-slate-200 bg-white shadow-sm space-y-5 h-full">
-      <div className="flex items-center space-x-2.5 pb-2 border-b border-slate-100">
-        <div className="p-2 bg-purple-50 text-purple-600 rounded-lg">
-          <Sparkles className="h-4.5 w-4.5" />
+      <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+        <div className="flex items-center space-x-2.5">
+          <div className="p-2 bg-purple-50 text-purple-600 rounded-lg">
+            <Sparkles className="h-4.5 w-4.5" />
+          </div>
+          <h3 className="text-sm font-semibold text-slate-800">Summary</h3>
         </div>
-        <h3 className="text-sm font-semibold text-slate-800">Summary</h3>
+        {renderConfidenceBadge(data.confidenceScores?.personal ? Math.min(100, data.confidenceScores.personal + 10) : 85)}
       </div>
       <p className="text-xs text-slate-600 leading-relaxed font-medium">
         {synthesizedSummary}
@@ -145,21 +166,22 @@ export const ParsedResults: React.FC<ParsedResultsProps> = ({ data, isLoading })
 
   const renderExperience = () => (
     <Card className="p-6 border border-slate-200 bg-white shadow-sm space-y-5 h-full">
-      <div className="flex items-center space-x-2.5 pb-2 border-b border-slate-100">
-        <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
-          <Briefcase className="h-4.5 w-4.5" />
+      <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+        <div className="flex items-center space-x-2.5">
+          <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
+            <Briefcase className="h-4.5 w-4.5" />
+          </div>
+          <h3 className="text-sm font-semibold text-slate-800">Experience</h3>
         </div>
-        <h3 className="text-sm font-semibold text-slate-800">Experience</h3>
+        {renderConfidenceBadge(data.confidenceScores?.experience)}
       </div>
       {data.experience && data.experience.length > 0 ? (
         <div className="relative border-l-2 border-slate-100 pl-5 ml-2.5 space-y-6">
           {data.experience.map((exp, idx) => {
-            // Split exp text into Title, Company, Description if matched
             const parts = exp.split('\n');
             const headerLine = parts[0];
             const descLines = parts.slice(1);
             
-            // Extract dates (e.g. 2020-2023)
             const dateMatch = headerLine.match(/\(\d{4}[-–]\d{4}\)|\(\d{4}[-–]Present\)/gi);
             const dateString = dateMatch ? dateMatch[0].replace(/[()]/g, '') : '';
             const cleanedHeader = headerLine.replace(/\(\d{4}[-–]\d{4}\)|\(\d{4}[-–]Present\)/gi, '').trim();
@@ -169,7 +191,6 @@ export const ParsedResults: React.FC<ParsedResultsProps> = ({ data, isLoading })
 
             return (
               <div key={idx} className="relative group text-left">
-                {/* Custom timeline bullet */}
                 <div className="absolute -left-[26px] top-1.5 h-3 w-3 rounded-full border-2 border-white bg-[#4f46e5] group-hover:bg-[#4f46e5]/80 transition-colors"></div>
                 <div className="flex items-start justify-between gap-4">
                   <h4 className="text-xs font-semibold text-slate-800">{title}</h4>
@@ -193,11 +214,14 @@ export const ParsedResults: React.FC<ParsedResultsProps> = ({ data, isLoading })
 
   const renderSkills = () => (
     <Card className="p-6 border border-slate-200 bg-white shadow-sm space-y-5 h-full">
-      <div className="flex items-center space-x-2.5 pb-2 border-b border-slate-100">
-        <div className="p-2 bg-emerald-50 text-emerald-600 rounded-lg">
-          <LayoutGrid className="h-4.5 w-4.5" />
+      <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+        <div className="flex items-center space-x-2.5">
+          <div className="p-2 bg-emerald-50 text-emerald-600 rounded-lg">
+            <LayoutGrid className="h-4.5 w-4.5" />
+          </div>
+          <h3 className="text-sm font-semibold text-slate-800">Skills</h3>
         </div>
-        <h3 className="text-sm font-semibold text-slate-800">Skills</h3>
+        {renderConfidenceBadge(data.confidenceScores?.skills)}
       </div>
       {data.skills && data.skills.length > 0 ? (
         <div className="flex flex-wrap gap-1.5">
@@ -219,11 +243,14 @@ export const ParsedResults: React.FC<ParsedResultsProps> = ({ data, isLoading })
 
   const renderEducation = () => (
     <Card className="p-6 border border-slate-200 bg-white shadow-sm space-y-5 h-full">
-      <div className="flex items-center space-x-2.5 pb-2 border-b border-slate-100">
-        <div className="p-2 bg-sky-50 text-sky-600 rounded-lg">
-          <GraduationCap className="h-4.5 w-4.5" />
+      <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+        <div className="flex items-center space-x-2.5">
+          <div className="p-2 bg-sky-50 text-sky-600 rounded-lg">
+            <GraduationCap className="h-4.5 w-4.5" />
+          </div>
+          <h3 className="text-sm font-semibold text-slate-800">Education</h3>
         </div>
-        <h3 className="text-sm font-semibold text-slate-800">Education</h3>
+        {renderConfidenceBadge(data.confidenceScores?.education)}
       </div>
       {data.education && data.education.length > 0 ? (
         <div className="space-y-4">
@@ -232,7 +259,6 @@ export const ParsedResults: React.FC<ParsedResultsProps> = ({ data, isLoading })
             const degree = parts[0] || '';
             const schoolWithDate = parts[1] || '';
             
-            // Extract dates (e.g. 2014-2018)
             const dateMatch = schoolWithDate.match(/\(\d{4}[-–]\d{4}\)/g);
             const dateString = dateMatch ? dateMatch[0].replace(/[()]/g, '') : '';
             const school = schoolWithDate.replace(/\(\d{4}[-–]\d{4}\)/g, '').trim();
@@ -258,11 +284,14 @@ export const ParsedResults: React.FC<ParsedResultsProps> = ({ data, isLoading })
 
   const renderProjects = () => (
     <Card className="p-6 border border-slate-200 bg-white shadow-sm space-y-5 h-full">
-      <div className="flex items-center space-x-2.5 pb-2 border-b border-slate-100">
-        <div className="p-2 bg-amber-50 text-amber-600 rounded-lg">
-          <Star className="h-4.5 w-4.5" />
+      <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+        <div className="flex items-center space-x-2.5">
+          <div className="p-2 bg-amber-50 text-amber-600 rounded-lg">
+            <Star className="h-4.5 w-4.5" />
+          </div>
+          <h3 className="text-sm font-semibold text-slate-800">Projects</h3>
         </div>
-        <h3 className="text-sm font-semibold text-slate-800">Projects</h3>
+        {renderConfidenceBadge(data.confidenceScores?.projects)}
       </div>
       {data.projects && data.projects.length > 0 ? (
         <div className="space-y-4">
@@ -287,11 +316,14 @@ export const ParsedResults: React.FC<ParsedResultsProps> = ({ data, isLoading })
 
   const renderCertifications = () => (
     <Card className="p-6 border border-slate-200 bg-white shadow-sm space-y-5 h-full">
-      <div className="flex items-center space-x-2.5 pb-2 border-b border-slate-100">
-        <div className="p-2 bg-orange-50 text-orange-600 rounded-lg">
-          <Award className="h-4.5 w-4.5" />
+      <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+        <div className="flex items-center space-x-2.5">
+          <div className="p-2 bg-orange-50 text-orange-600 rounded-lg">
+            <Award className="h-4.5 w-4.5" />
+          </div>
+          <h3 className="text-sm font-semibold text-slate-800">Certifications</h3>
         </div>
-        <h3 className="text-sm font-semibold text-slate-800">Certifications</h3>
+        {renderConfidenceBadge(data.confidenceScores?.certifications)}
       </div>
       {data.certifications && data.certifications.length > 0 ? (
         <ul className="space-y-2 text-xs text-slate-600 list-disc pl-4 text-left font-medium">
@@ -309,11 +341,14 @@ export const ParsedResults: React.FC<ParsedResultsProps> = ({ data, isLoading })
 
   const renderLinks = () => (
     <Card className="p-6 border border-slate-200 bg-white shadow-sm space-y-5 h-full">
-      <div className="flex items-center space-x-2.5 pb-2 border-b border-slate-100">
-        <div className="p-2 bg-pink-50 text-pink-600 rounded-lg">
-          <LinkIcon className="h-4.5 w-4.5" />
+      <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+        <div className="flex items-center space-x-2.5">
+          <div className="p-2 bg-pink-50 text-pink-600 rounded-lg">
+            <LinkIcon className="h-4.5 w-4.5" />
+          </div>
+          <h3 className="text-sm font-semibold text-slate-800">Links</h3>
         </div>
-        <h3 className="text-sm font-semibold text-slate-800">Links</h3>
+        {renderConfidenceBadge(data.confidenceScores?.links)}
       </div>
       {data.links && data.links.length > 0 ? (
         <div className="space-y-2.5">

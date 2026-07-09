@@ -8,6 +8,15 @@ export interface ParsedResumeData {
   certifications?: string[];
   projects?: string[];
   links?: string[];
+  confidenceScores?: {
+    personal?: number;
+    skills?: number;
+    experience?: number;
+    education?: number;
+    projects?: number;
+    certifications?: number;
+    links?: number;
+  };
 }
 
 export interface ApiResponse {
