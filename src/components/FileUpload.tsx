@@ -115,8 +115,8 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileUpload, onParse, i
             <div className="p-2 bg-red-50 border border-red-100 rounded-md text-red-500 flex-shrink-0">
               <FileText className="h-4.5 w-4.5" />
             </div>
-            <div className="text-left min-w-0">
-              <p className="text-xs font-semibold text-slate-800 truncate max-w-[160px] sm:max-w-md">{uploadedFile.name}</p>
+            <div className="text-left min-w-0 flex-1">
+              <p className="text-xs font-semibold text-slate-800 truncate">{uploadedFile.name}</p>
               <p className="text-[10px] text-slate-400">
                 {(uploadedFile.size / (1024 * 1024)).toFixed(2)} MB
               </p>

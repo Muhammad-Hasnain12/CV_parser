@@ -146,7 +146,7 @@ const Index = () => {
       {/* 1. LEFT SIDEBAR NAVIGATION */}
       <aside className={`
         fixed inset-y-0 left-0 z-50 w-64 bg-[#0f172a] text-slate-400 border-r border-slate-800/80 flex flex-col justify-between transition-transform duration-300
-        ${isSidebarOpen ? 'translate-x-0' : '-translate-x-0 max-md:-translate-x-full'}
+        ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
         md:translate-x-0
       `}>
         <div className="flex flex-col flex-1">
