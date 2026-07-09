@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Upload, FileText, X, CheckCircle, Sparkles, Zap } from 'lucide-react';
+import { Upload, FileText, X, Sparkles, Check, Lightbulb } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { cn } from '@/lib/utils';
@@ -29,7 +29,8 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileUpload, onParse, i
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
       'text/plain': ['.txt']
     },
-    maxFiles: 1
+    maxFiles: 1,
+    disabled: !!uploadedFile || isLoading
   });
 
   const removeFile = () => {
@@ -37,122 +38,156 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileUpload, onParse, i
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
+    <div className="w-full space-y-4">
+      {/* File Upload Box */}
       <div
         {...getRootProps()}
         className={cn(
-          "relative overflow-hidden border-2 border-dashed rounded-3xl p-16 text-center cursor-pointer transition-all duration-500 hover:border-primary/60 bg-gradient-to-br from-card/50 to-card/80 backdrop-blur-sm",
-          isDragActive && "border-primary bg-primary/10 scale-105 shadow-2xl shadow-primary/20",
-          uploadedFile && "border-primary/40 bg-primary/5 shadow-xl"
+          "relative border-2 border-dashed border-[#6366f1]/40 rounded-xl p-10 text-center transition-all bg-white shadow-sm",
+          !uploadedFile && "cursor-pointer hover:bg-slate-50/50 hover:border-[#6366f1]/70",
+          isDragActive && "border-[#4f46e5] bg-indigo-50/30",
+          uploadedFile && "border-slate-200 bg-white cursor-default"
         )}
       >
         <input {...getInputProps()} />
-        
-        {/* Animated background effects */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.1),transparent_50%)] opacity-0 hover:opacity-100 transition-opacity duration-700"></div>
-        
-        {/* Floating particles */}
-        <div className="absolute top-4 left-4 w-2 h-2 bg-primary/30 rounded-full animate-pulse"></div>
-        <div className="absolute top-8 right-8 w-1 h-1 bg-secondary/40 rounded-full animate-pulse delay-300"></div>
-        <div className="absolute bottom-6 left-1/3 w-1.5 h-1.5 bg-primary/20 rounded-full animate-pulse delay-500"></div>
-        
+
         {uploadedFile ? (
-          <div className="space-y-8 relative z-10">
-            <div className="flex items-center justify-center space-x-6">
-              <div className="p-4 bg-primary/15 rounded-2xl border border-primary/20">
-                <CheckCircle className="h-10 w-10 text-primary animate-pulse" />
-              </div>
-              <div className="text-left">
-                <p className="text-2xl font-bold text-foreground mb-2">{uploadedFile.name}</p>
-                <p className="text-sm text-muted-foreground">
-                  {(uploadedFile.size / (1024 * 1024)).toFixed(2)} MB • Ready to parse
-                </p>
-              </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  removeFile();
-                }}
-                className="h-12 w-12 hover:bg-destructive/10 hover:text-destructive rounded-xl transition-all duration-300"
-              >
-                <X className="h-6 w-6" />
-              </Button>
+          <div className="space-y-4">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-indigo-50 text-[#4f46e5]">
+              <Upload className="h-6 w-6" />
             </div>
-            <div className="flex items-center justify-center space-x-2 text-primary/70">
-              <Sparkles className="h-4 w-4 animate-pulse" />
-              <p className="text-sm font-medium">
-                File ready for parsing. Click the button below to start.
+            
+            <div className="space-y-1">
+              <h3 className="text-sm font-semibold text-slate-800">
+                Drag & drop your resume here
+              </h3>
+              <p className="text-xs text-slate-500">
+                or <span className="text-[#4f46e5] font-medium">click to browse</span>
               </p>
+              <p className="text-[10px] text-slate-400">
+                Supports PDF, DOCX, TXT (Max 10MB)
+              </p>
+            </div>
+
+            <div className="pt-2">
+              <Button
+                type="button"
+                className="bg-[#4f46e5] hover:bg-[#4f46e5]/90 text-white font-medium text-xs h-8 px-4 rounded-md shadow-sm transition-colors"
+              >
+                Browse Files
+              </Button>
             </div>
           </div>
         ) : (
-          <div className="space-y-8 relative z-10">
-            <div className="relative">
-              <div className="p-8 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-3xl w-32 h-32 mx-auto flex items-center justify-center border border-primary/20 group-hover:scale-110 transition-transform duration-500">
-                <Upload className="h-16 w-16 text-primary group-hover:animate-bounce" />
-              </div>
-              {/* Glow effect */}
-              <div className="absolute inset-0 bg-primary/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <div className="space-y-4">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-indigo-50 text-[#4f46e5]">
+              <Upload className="h-6 w-6" />
             </div>
             
-            <div className="space-y-4">
-              <h3 className="text-3xl font-bold text-foreground">
-                {isDragActive ? 'Drop your file here' : 'Drag and drop your resume'}
+            <div className="space-y-1">
+              <h3 className="text-sm font-semibold text-slate-800">
+                Drag & drop your resume here
               </h3>
-              <p className="text-lg text-muted-foreground">
-                Supports PDF, DOCX, and TXT files
+              <p className="text-xs text-slate-500">
+                or <span className="text-[#4f46e5] font-medium">click to browse</span>
               </p>
-              <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
-                <Zap className="h-4 w-4" />
-                <span>or click to browse files</span>
-              </div>
+              <p className="text-[10px] text-slate-400">
+                Supports PDF, DOCX, TXT (Max 10MB)
+              </p>
             </div>
-            
-            {/* File type indicators */}
-            <div className="flex justify-center space-x-4">
-              <div className="flex items-center space-x-2 px-3 py-2 bg-muted/50 rounded-lg">
-                <FileText className="h-4 w-4 text-primary" />
-                <span className="text-sm font-medium">PDF</span>
-              </div>
-              <div className="flex items-center space-x-2 px-3 py-2 bg-muted/50 rounded-lg">
-                <FileText className="h-4 w-4 text-primary" />
-                <span className="text-sm font-medium">DOCX</span>
-              </div>
-              <div className="flex items-center space-x-2 px-3 py-2 bg-muted/50 rounded-lg">
-                <FileText className="h-4 w-4 text-primary" />
-                <span className="text-sm font-medium">TXT</span>
-              </div>
+
+            <div className="pt-2">
+              <Button
+                type="button"
+                className="bg-[#4f46e5] hover:bg-[#4f46e5]/90 text-white font-medium text-xs h-8 px-4 rounded-md shadow-sm transition-colors"
+              >
+                Browse Files
+              </Button>
             </div>
           </div>
         )}
       </div>
 
+      {/* Selected File Card */}
       {uploadedFile && (
-        <div className="mt-12 flex justify-center">
+        <div className="flex items-center justify-between border border-slate-200 rounded-lg p-3.5 bg-white shadow-sm">
+          <div className="flex items-center space-x-3.5 min-w-0">
+            <div className="p-2 bg-red-50 border border-red-100 rounded-md text-red-500 flex-shrink-0">
+              <FileText className="h-4.5 w-4.5" />
+            </div>
+            <div className="text-left min-w-0">
+              <p className="text-xs font-semibold text-slate-800 truncate max-w-[160px] sm:max-w-md">{uploadedFile.name}</p>
+              <p className="text-[10px] text-slate-400">
+                {(uploadedFile.size / (1024 * 1024)).toFixed(2)} MB
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Check className="h-4 w-4 text-emerald-500" />
+            <Button
+              variant="ghost"
+              size="icon"
+              disabled={isLoading}
+              onClick={(e) => {
+                e.stopPropagation();
+                removeFile();
+              }}
+              className="h-8 w-8 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-md"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Parse Resume Trigger Button */}
+      {uploadedFile && (
+        <div className="flex justify-center">
           <Button
             onClick={onParse}
             disabled={isLoading}
-            size="lg"
-            className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white text-xl px-16 py-8 h-auto font-bold rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-primary/25 border-0"
+            className="w-full bg-[#4f46e5] hover:bg-[#4f46e5]/90 text-white font-medium text-xs h-9 px-6 rounded-md shadow-sm transition-colors"
           >
             {isLoading ? (
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-2">
                 <LoadingSpinner size="sm" className="text-white" />
                 <span>Parsing Resume...</span>
               </div>
             ) : (
-              <div className="flex items-center space-x-3">
-                <Sparkles className="h-6 w-6" />
+              <div className="flex items-center space-x-1.5">
+                <Sparkles className="h-3.5 w-3.5" />
                 <span>Parse Resume</span>
-                <Zap className="h-6 w-6" />
               </div>
             )}
           </Button>
         </div>
       )}
+
+      {/* Tips Card */}
+      <div className="border border-[#3b82f6]/10 rounded-lg p-5 bg-[#eff6ff]/30 dark:bg-blue-950/5 space-y-3.5 text-left shadow-sm">
+        <div className="flex items-center space-x-2 text-[#3b82f6]">
+          <Lightbulb className="h-4 w-4" />
+          <h4 className="text-xs font-semibold uppercase tracking-wider">Tips</h4>
+        </div>
+        <ul className="space-y-2 text-xs text-slate-600 dark:text-slate-400">
+          <li className="flex items-center space-x-2">
+            <Check className="h-3.5 w-3.5 text-[#3b82f6] flex-shrink-0" />
+            <span>Ensure your resume is in English</span>
+          </li>
+          <li className="flex items-center space-x-2">
+            <Check className="h-3.5 w-3.5 text-[#3b82f6] flex-shrink-0" />
+            <span>PDF format works best</span>
+          </li>
+          <li className="flex items-center space-x-2">
+            <Check className="h-3.5 w-3.5 text-[#3b82f6] flex-shrink-0" />
+            <span>Max file size is 10MB</span>
+          </li>
+          <li className="flex items-center space-x-2">
+            <Check className="h-3.5 w-3.5 text-[#3b82f6] flex-shrink-0" />
+            <span>All data is processed securely</span>
+          </li>
+        </ul>
+      </div>
     </div>
   );
 };

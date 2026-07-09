@@ -1,68 +1,70 @@
 import React from 'react';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { Button } from '@/components/ui/button';
-import { Github, Mail, Shield, Sparkles, Menu, X } from 'lucide-react';
+import { Github, Mail, Sparkles, Menu, X } from 'lucide-react';
 
 export const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  const scrollToFeatures = () => {
-    const featuresSection = document.getElementById('features-section');
-    if (featuresSection) {
-      featuresSection.scrollIntoView({ behavior: 'smooth' });
-    }
+  const handleNavClick = (sectionId: string) => {
     setIsMobileMenuOpen(false);
-  };
-
-  const scrollToAbout = () => {
-    const aboutSection = document.getElementById('about');
-    if (aboutSection) {
-      aboutSection.scrollIntoView({ behavior: 'smooth' });
+    if (location.pathname === '/') {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      navigate(`/#${sectionId}`);
     }
-    setIsMobileMenuOpen(false);
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between">
-        <div className="flex items-center space-x-3">
-          <div className="relative">
-            <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-primary to-secondary shadow-lg"></div>
-            <div className="absolute inset-0 bg-gradient-to-br from-primary to-secondary rounded-xl blur-sm opacity-50"></div>
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-md">
+      <div className="max-w-6xl mx-auto px-4 flex h-14 items-center justify-between">
+        <Link to="/" className="flex items-center space-x-2.5 hover:opacity-90 transition-opacity">
+          <div className="h-6 w-6 rounded bg-foreground flex items-center justify-center text-background font-bold text-xs select-none">
+            P
           </div>
-          <span className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+          <span className="text-sm font-semibold tracking-tight text-foreground">
             ParsePath
           </span>
-        </div>
+        </Link>
         
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8">
+        <nav className="hidden md:flex items-center space-x-6">
           <button 
-            onClick={scrollToFeatures}
-            className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors cursor-pointer relative group"
+            onClick={() => handleNavClick('features-section')}
+            className="text-xs font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
           >
             Features
-            <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></div>
           </button>
           <button 
-            onClick={scrollToAbout}
-            className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors cursor-pointer relative group"
+            onClick={() => handleNavClick('about')}
+            className="text-xs font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
           >
             About
-            <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></div>
           </button>
+          <Link 
+            to="/contact" 
+            className="text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Contact
+          </Link>
         </nav>
         
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-2">
           <ThemeToggle />
           
           <a
             href="https://github.com/Muhammad-Hasnain12"
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden md:flex items-center border border-border/50 rounded-xl px-4 py-2 text-sm font-medium hover:text-primary hover:border-primary/50 transition-all duration-300 hover:shadow-md"
+            className="hidden md:inline-flex items-center justify-center text-xs font-medium border border-border bg-background hover:bg-muted text-muted-foreground hover:text-foreground h-8 px-3 rounded-md transition-colors"
           >
-            <Github className="h-4 w-4 mr-2" />
+            <Github className="h-3.5 w-3.5 mr-1.5" />
             GitHub
           </a>
           
@@ -70,51 +72,52 @@ export const Header: React.FC = () => {
           <Button
             variant="ghost"
             size="icon"
-            className="md:hidden"
+            className="md:hidden h-8 w-8"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {isMobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
           </Button>
         </div>
       </div>
       
       {/* Mobile Navigation */}
       {isMobileMenuOpen && (
-        <div className="md:hidden border-t border-border/40 bg-background/95 backdrop-blur">
-          <div className="container py-4 space-y-4">
+        <div className="md:hidden border-t border-border bg-background">
+          <div className="px-4 py-3 space-y-2">
             <button 
-              onClick={scrollToFeatures}
-              className="flex items-center space-x-3 w-full px-4 py-3 text-left text-sm font-medium text-muted-foreground hover:text-primary hover:bg-muted/50 rounded-lg transition-colors"
+              onClick={() => handleNavClick('features-section')}
+              className="flex items-center space-x-2.5 w-full py-2 text-left text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
-              <Sparkles className="h-4 w-4" />
+              <Sparkles className="h-3.5 w-3.5 text-muted-foreground" />
               <span>Features</span>
             </button>
             <button 
-              onClick={scrollToAbout}
-              className="flex items-center space-x-3 w-full px-4 py-3 text-left text-sm font-medium text-muted-foreground hover:text-primary hover:bg-muted/50 rounded-lg transition-colors"
+              onClick={() => handleNavClick('about')}
+              className="flex items-center space-x-2.5 w-full py-2 text-left text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
-              <Shield className="h-4 w-4" />
+              <Sparkles className="h-3.5 w-3.5 text-muted-foreground" />
               <span>About</span>
             </button>
+            <Link
+              to="/contact"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="flex items-center space-x-2.5 w-full py-2 text-left text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <Mail className="h-3.5 w-3.5 text-muted-foreground" />
+              <span>Contact</span>
+            </Link>
             <a
               href="https://github.com/Muhammad-Hasnain12"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center space-x-3 w-full px-4 py-3 text-left text-sm font-medium text-muted-foreground hover:text-primary hover:bg-muted/50 rounded-lg transition-colors"
+              className="flex items-center space-x-2.5 w-full py-2 text-left text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
-              <Github className="h-4 w-4" />
+              <Github className="h-3.5 w-3.5 text-muted-foreground" />
               <span>GitHub</span>
-            </a>
-            <a
-              href="mailto:hasnainmemon04@outlook.com"
-              className="flex items-center space-x-3 w-full px-4 py-3 text-left text-sm font-medium text-muted-foreground hover:text-primary hover:bg-muted/50 rounded-lg transition-colors"
-            >
-              <Mail className="h-4 w-4" />
-              <span>Contact</span>
             </a>
           </div>
         </div>
       )}
     </header>
   );
-}; 
+};

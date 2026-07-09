@@ -1,5 +1,7 @@
 import React from 'react';
 import { Header } from '@/components/Header';
+import { useToast } from '@/hooks/use-toast';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { 
   Mail, 
   MapPin, 
@@ -14,6 +16,98 @@ import {
 } from 'lucide-react';
 
 const Contact = () => {
+  const { toast } = useToast();
+  const [formData, setFormData] = React.useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const [submitting, setSubmitting] = React.useState(false);
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({ ...prev, [id]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!formData.firstName.trim()) {
+      toast({
+        title: "Validation Error",
+        description: "First name is required.",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (!formData.email.trim()) {
+      toast({
+        title: "Validation Error",
+        description: "Email is required.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      toast({
+        title: "Validation Error",
+        description: "Please enter a valid email address.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!formData.subject) {
+      toast({
+        title: "Validation Error",
+        description: "Please select a subject.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!formData.message.trim()) {
+      toast({
+        title: "Validation Error",
+        description: "Message cannot be empty.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      // Simulate form submission to backend API
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      
+      toast({
+        title: "Message Sent!",
+        description: "Thank you. We have received your inquiry and will respond shortly.",
+      });
+
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        subject: '',
+        message: '',
+      });
+    } catch (error) {
+      toast({
+        title: "Error Sending Message",
+        description: "Please check your connection and try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setSubmitting(false);
+    }
+  };
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -176,7 +270,7 @@ const Contact = () => {
               </div>
               
               <div className="space-y-6">
-                <form className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
                       <label htmlFor="firstName" className="block text-sm font-semibold mb-2">
@@ -185,7 +279,10 @@ const Contact = () => {
                       <input 
                         type="text" 
                         id="firstName"
-                        className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                        value={formData.firstName}
+                        onChange={handleInputChange}
+                        disabled={submitting}
+                        className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
                         placeholder="Your first name"
                       />
                     </div>
@@ -196,7 +293,10 @@ const Contact = () => {
                       <input 
                         type="text" 
                         id="lastName"
-                        className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                        value={formData.lastName}
+                        onChange={handleInputChange}
+                        disabled={submitting}
+                        className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
                         placeholder="Your last name"
                       />
                     </div>
@@ -209,7 +309,10 @@ const Contact = () => {
                     <input 
                       type="email" 
                       id="email"
-                      className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      disabled={submitting}
+                      className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
                       placeholder="your.email@example.com"
                     />
                   </div>
@@ -220,7 +323,10 @@ const Contact = () => {
                     </label>
                     <select 
                       id="subject"
-                      className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                      value={formData.subject}
+                      onChange={handleInputChange}
+                      disabled={submitting}
+                      className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
                     >
                       <option value="">Select a subject</option>
                       <option value="general">General Inquiry</option>
@@ -238,17 +344,30 @@ const Contact = () => {
                     <textarea 
                       id="message"
                       rows={6}
-                      className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      disabled={submitting}
+                      className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none disabled:opacity-50"
                       placeholder="Tell us how we can help you..."
                     ></textarea>
                   </div>
                   
                   <button 
                     type="submit"
-                    className="w-full inline-flex items-center justify-center space-x-2 bg-primary text-primary-foreground px-6 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors"
+                    disabled={submitting}
+                    className="w-full inline-flex items-center justify-center space-x-2 bg-primary text-primary-foreground px-6 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
                   >
-                    <span>Send Message</span>
-                    <Send className="h-4 w-4" />
+                    {submitting ? (
+                      <>
+                        <LoadingSpinner size="sm" className="text-primary-foreground mr-2" />
+                        <span>Sending Message...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Send Message</span>
+                        <Send className="h-4 w-4" />
+                      </>
+                    )}
                   </button>
                 </form>
               </div>

@@ -1,18 +1,10 @@
 // Use relative URLs for better Vercel deployment compatibility
-const API_BASE_URL = process.env.NODE_ENV === 'production' 
+const API_BASE_URL = import.meta.env.PROD
   ? '/api'  // Use relative path for production (Vercel)
   : 'http://localhost:5000/api';  // Use local backend for development
 
-import { ParsedData } from '@/utils/csvUtils';
+import { ParsedResumeData, ApiResponse } from '@/types';
 
-export type ParsedResumeData = ParsedData;
-
-export interface ApiResponse {
-  success: boolean;
-  data?: ParsedResumeData;
-  error?: string;
-  filename?: string;
-}
 
 export class ApiService {
   static async parseResume(file: File): Promise<ApiResponse> {
@@ -33,8 +25,9 @@ export class ApiService {
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error('API Error:', error);
-      throw error;
+      const message = error instanceof Error ? error.message : 'Failed to connect to the parsing server';
+      console.error('API Error parsing resume:', error);
+      throw new Error(message);
     }
   }
 

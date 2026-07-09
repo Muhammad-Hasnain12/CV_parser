@@ -31,8 +31,8 @@ const limiter = rateLimit({
 app.use('/api/', limiter);
 
 // Body parsing middleware
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(express.json({ limit: '1mb' }));
+app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 
 // File upload configuration
 const storage = multer.memoryStorage();
@@ -80,12 +80,15 @@ app.post('/api/parse-resume', upload.single('resume'), async (req, res) => {
 
     const { originalname, mimetype, buffer } = req.file;
     
-    console.log(`📄 Processing file: ${originalname} (${mimetype})`);
+    // Sanitize filename to prevent directory traversal or script injection
+    const sanitizedFilename = path.basename(originalname).replace(/[^a-zA-Z0-9_.-]/g, "_");
+    
+    console.log(`📄 Processing file: ${sanitizedFilename} (${mimetype})`);
     console.log(`📏 File size: ${buffer.length} bytes`);
 
     // Parse the resume
     console.log('🔧 Starting resume parsing...');
-    const parsedData = await parseResume(buffer, originalname, mimetype);
+    const parsedData = await parseResume(buffer, sanitizedFilename, mimetype);
     console.log('✅ Parsing completed successfully');
     console.log('📊 Parsed data keys:', Object.keys(parsedData));
 
